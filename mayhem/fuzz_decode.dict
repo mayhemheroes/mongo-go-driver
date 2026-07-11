@@ -1,0 +1,61 @@
+# libFuzzer dictionary for the mongo-go-driver BSON FuzzDecode target.
+# BSON is a length-prefixed binary format: int32 total length, then a sequence
+# of (type-byte, cstring ename, value) elements, terminated by 0x00.
+# Tokens below are BSON element type bytes and small structural fragments to
+# help the fuzzer assemble well-formed BSON documents faster.
+# Values use ONLY \xNN / \\ / \" escapes (no raw non-ASCII, no \n/\t/\r).
+
+# element type bytes
+"\x01"
+"\x02"
+"\x03"
+"\x04"
+"\x05"
+"\x06"
+"\x07"
+"\x08"
+"\x09"
+"\x0a"
+"\x0b"
+"\x0d"
+"\x0e"
+"\x0f"
+"\x10"
+"\x11"
+"\x12"
+"\x13"
+"\xff"
+"\x7f"
+
+# document terminator / null byte
+"\x00"
+
+# small empty document (int32 length 5, then terminator)
+"\x05\x00\x00\x00\x00"
+
+# common element names (cstrings, null-terminated)
+"_id\x00"
+"a\x00"
+"name\x00"
+"value\x00"
+"0\x00"
+"1\x00"
+
+# int32 element: type 0x10, ename "a\x00", value 1
+"\x10a\x00\x01\x00\x00\x00"
+
+# bool true / false element values
+"\x08\x62\x00\x01"
+"\x08\x62\x00\x00"
+
+# binary subtypes
+"\x00"
+"\x01"
+"\x02"
+"\x03"
+"\x04"
+"\x80"
+
+# length fragments commonly seen
+"\x04\x00\x00\x00"
+"\x0c\x00\x00\x00"
